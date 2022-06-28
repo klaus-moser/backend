@@ -1,6 +1,9 @@
-from os import environ
+from os import environ, getenv
 from datetime import timedelta
+from dotenv import load_dotenv
 
+
+load_dotenv()
 
 modes: dict = {'PRODUCTION': 'ProductionConfig',
                'DEVELOP': 'DevelopmentConfig',
@@ -16,18 +19,18 @@ class Config(object):
     ENV = 'production'
     DEBUG = False
     TESTING = False
-    SECRET_KEY = "B\xb2?.\xdf\x9f\xa7m\xf8\x8a%,\xf7\xc4\xfa\x91"  # TODO: *** Change ***
+    SECRET_KEY = getenv('SECRET_KEY')
 
     DB_NAME = "production-db"
-    DB_USERNAME = "foo"  # TODO: *** Change ***
-    DB_PASSWORD = "bar"  # TODO: *** Change ***
+    DB_USERNAME = getenv('DB_USERNAME')
+    DB_PASSWORD = getenv('DB_PASSWORD')
 
     SESSION_COOKIE_SECURE = True
 
     FLASK_SERVER_NAME = 'localhost:5000'
     FLASK_THREADED = True
 
-    JWT_SECRET_KEY = "B\xb2?.\xdf\x9f\xa7m\xf8\x8a%,\xf7\xc4\xfa\x91"  # TODO: *** Change ***
+    JWT_SECRET_KEY = getenv("JWT_SECRET_KEY")
     JWT_BLACKLIST_ENABLED = True
     JWT_BLACKLIST_TOKEN_CHECKS = ['access', 'refresh']
     JWT_TOKEN_LOCATION = ['cookies']
@@ -57,8 +60,8 @@ class DevelopmentConfig(Config):
     DEBUG = True
 
     DB_NAME = "development-db"
-    DB_USERNAME = "userjw"
-    DB_PASSWORD = "1q2w3e4r"
+    DB_USERNAME = getenv('DB_USERNAME_DEV')
+    DB_PASSWORD = getenv('DB_PASSWORD_DEV')
 
     SQLALCHEMY_DATABASE_URI = environ.get('DATABASE_URL', 'sqlite:///' + DB_NAME + '.db')
 
@@ -75,8 +78,8 @@ class TestingConfig(Config):
     TESTING = True
 
     DB_NAME = "testing-db"
-    DB_USERNAME = "userjw"
-    DB_PASSWORD = "1q2w3e4r"
+    DB_USERNAME = getenv('DB_USERNAME_DEV')
+    DB_PASSWORD = getenv('DB_PASSWORD_DEV')
 
     SQLALCHEMY_DATABASE_URI = environ.get('DATABASE_URL', 'sqlite:///' + DB_NAME + '.db')
 
